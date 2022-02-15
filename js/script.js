@@ -32,3 +32,24 @@ function operate(sign,a,b){
             return 0 //maybe some sort of error code
     }
 }
+
+const numButtons = document.querySelectorAll('.num');
+const opButtons = document.querySelectorAll('.op');
+const currentDisplay = document.querySelector('.current');
+const ACButton = document.querySelector('.ac');
+
+function displayInput(e){
+    text = currentDisplay.textContent.concat(e.target.textContent)
+    currentDisplay.textContent = text.substr(0);//text.length-23);
+
+}
+
+ACButton.addEventListener('click',()=> currentDisplay.textContent='')
+
+numButtons.forEach(element => {
+    element.addEventListener('click', displayInput);
+});
+
+opButtons.forEach(element => {
+    element.addEventListener('click', displayInput);
+});
