@@ -54,10 +54,9 @@ body{
     font-size: 3em;
     margin: 0 2%;
     flex: 5;
+    display: flex;
+    justify-content: flex-end;
     overflow: hidden;
-    /* max-width: inherit; */
-
-   
 }
 
 .inputs{
