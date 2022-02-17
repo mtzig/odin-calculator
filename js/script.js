@@ -1,32 +1,32 @@
-function add(a,b){
-    return +a+ +b;
+function add(a, b) {
+    return +a + +b;
 }
 
-function subtract(a,b){
-    return +a- +b;
+function subtract(a, b) {
+    return +a - +b;
 }
 
-function multiply(a,b){
+function multiply(a, b) {
     return +a * +b;
 }
 
-function divide(a,b){
+function divide(a, b) {
     return +a / +b //need to make this handle divide by zero?
 }
 
-function operate(sign,a,b){
-    switch(sign){
+function operate(sign, a, b) {
+    switch (sign) {
         case '+':
-            return add(a,b);
+            return add(a, b);
             break;
         case '-':
-            return subtract(a,b);
+            return subtract(a, b);
             break;
         case '*':
-            return multiply(a,b);
+            return multiply(a, b);
             break;
         case '/':
-            return divide(a,b);
+            return divide(a, b);
             break;
         default:
             return 0 //maybe some sort of error code
@@ -34,10 +34,10 @@ function operate(sign,a,b){
 }
 
 // const numButtons = document.querySelectorAll('.num');
-const calcButtons = document.querySelectorAll('.op,.num,.equal');
+const calcButtons = document.querySelectorAll('.op,.num,.equal,.ac');
 const currentDisplay = document.querySelector('.current');
 const prevDisplay = document.querySelector('.past-calc');
-const ACButton = document.querySelector('.ac');
+// const ACButton = document.querySelector('.ac');
 // const equalButton = document.querySelector('.equal');
 let firstVar = true;
 let op = false;
@@ -46,40 +46,65 @@ let secondVar = false;
 let a = ''
 let opSign = ''
 let b = ''
+let prevDisp = ''
 
 
-function storeInput(e){
+function storeInput(e) {
     console.log(e.target.className);
-    if(e.target.className == 'num'){
-        if(firstVar){
+    if (e.target.className == 'num') {
+        if (firstVar) {
             a += e.target.textContent;
-            //display and break
+            prevDisplay.textContent = prevDisp;
             currentDisplay.textContent = a;
-            
-        }else if(secondVar){
+
+        } else if (secondVar) {
             b += e.target.textContent;
-            currentDisplay.textContent = a+opSign+b;
+            currentDisplay.textContent = a + opSign + b;
         }
-    } else if(e.target.className == 'op'){
-        if(!op && a != ''){
+    } else if (e.target.className == 'op') {
+        if (!op && a != '') {
             firstVar = false;
             op = true;
             secondVar = true;
             opSign = e.target.textContent;
-            currentDisplay.textContent = a+opSign;
+            currentDisplay.textContent = a + opSign;
             //display and break
+        } else if (op && b != '') {
+
+
+            a = operate(opSign, a, b);
+            prevDisp = a
+            opSign = e.target.textContent;
+            prevDisplay.textContent = prevDisp;
+            currentDisplay.textContent = a + opSign;
+            b = '';
+
         }
-    } else if(e.target.className == 'equal'){
-        if(b != ''){ //only caculate if second var is present
+    } else if (e.target.className == 'equal') {
+        if (b != '') { //only caculate if second var is present
             op = false;
-            secondVar = false;
+            // secondVar = false;
+            prevDisp = a + opSign + b + '=';
+            a = operate(opSign, a, b);
+            b = '';
+            currentDisplay.textContent = a;
+            prevDisplay.textContent = prevDisp;
 
-            let answer = operate(opSign,a,b);
-            currentDisplay.textContent = answer;
-            prevDisplay.textContent = a+opSign+b+'=';
 
+            //do calculation and print
         }
-        //do calculation and print
+    } else if (e.target.className == 'ac') {
+        firstVar = true;
+        op = false;
+        secondVar = false;
+
+        a = ''
+        opSign = ''
+        b = ''
+        prevDisp = ''
+
+        currentDisplay.textContent = '';
+        prevDisplay.textContent = '';
     }
 }
 
@@ -90,7 +115,7 @@ function storeInput(e){
 
 // }
 
-ACButton.addEventListener('click',()=> currentDisplay.textContent='')
+// ACButton.addEventListener('click',()=> currentDisplay.textContent='')
 
 // numButtons.forEach(element => {
 //     element.addEventListener('click', storeInput);
