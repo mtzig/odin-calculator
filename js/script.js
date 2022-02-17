@@ -34,7 +34,7 @@ function operate(sign, a, b) {
 }
 
 // const numButtons = document.querySelectorAll('.num');
-const calcButtons = document.querySelectorAll('.op,.num,.equal,.ac');
+const calcButtons = document.querySelectorAll('button');
 const currentDisplay = document.querySelector('.current');
 const prevDisplay = document.querySelector('.past-calc');
 // const ACButton = document.querySelector('.ac');
@@ -47,6 +47,7 @@ let a = ''
 let opSign = ''
 let b = ''
 let prevDisp = ''
+let usedDot = false
 
 
 function storeInput(e) {
@@ -66,14 +67,16 @@ function storeInput(e) {
             firstVar = false;
             op = true;
             secondVar = true;
+            usedDot = false;
             opSign = e.target.textContent;
             currentDisplay.textContent = a + opSign;
-            //display and break
+        
         } else if (op && b != '') {
 
 
             a = operate(opSign, a, b);
             prevDisp = a
+            usedDot = false;
             opSign = e.target.textContent;
             prevDisplay.textContent = prevDisp;
             currentDisplay.textContent = a + opSign;
@@ -83,7 +86,7 @@ function storeInput(e) {
     } else if (e.target.className == 'equal') {
         if (b != '') { //only caculate if second var is present
             op = false;
-            // secondVar = false;
+            usedDot = false;
             prevDisp = a + opSign + b + '=';
             a = operate(opSign, a, b);
             b = '';
@@ -97,6 +100,7 @@ function storeInput(e) {
         firstVar = true;
         op = false;
         secondVar = false;
+        usedDot = false;
 
         a = ''
         opSign = ''
@@ -105,6 +109,20 @@ function storeInput(e) {
 
         currentDisplay.textContent = '';
         prevDisplay.textContent = '';
+    }else if (e.target.className == 'dot') {
+       if(!usedDot){
+        if (firstVar) {
+            a += e.target.textContent;
+            prevDisplay.textContent = prevDisp;
+            currentDisplay.textContent = a;
+
+        } else if (secondVar) {
+            b += e.target.textContent;
+            currentDisplay.textContent = a + opSign + b;
+        }
+
+        usedDot = true;
+       }
     }
 }
 
