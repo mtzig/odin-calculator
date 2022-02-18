@@ -70,7 +70,7 @@ function storeInput(e) {
             usedDot = false;
             opSign = e.target.textContent;
             currentDisplay.textContent = a + opSign;
-        
+
         } else if (op && b != '') {
 
 
@@ -109,35 +109,74 @@ function storeInput(e) {
 
         currentDisplay.textContent = '';
         prevDisplay.textContent = '';
-    }else if (e.target.className == 'dot') {
-       if(!usedDot){
-        if (firstVar) {
-            a += e.target.textContent;
-            prevDisplay.textContent = prevDisp;
-            currentDisplay.textContent = a;
+    } else if (e.target.className == 'dot') {
+        if (!usedDot) {
+            if (firstVar) {
+                a += e.target.textContent;
+                prevDisplay.textContent = prevDisp;
+                currentDisplay.textContent = a;
 
-        } else if (secondVar) {
-            b += e.target.textContent;
-            currentDisplay.textContent = a + opSign + b;
+            } else if (secondVar) {
+                b += e.target.textContent;
+                currentDisplay.textContent = a + opSign + b;
+            }
+
+            usedDot = true;
         }
+    } else if (e.target.className == 'del') {
+        let last = currentDisplay.textContent.charAt(currentDisplay.textContent.length - 1);
+        if (currentDisplay.textContent == 'Infinity') { //reset if infinity
+            firstVar = true;
+            op = false;
+            secondVar = false;
+            usedDot = false;
 
-        usedDot = true;
-       }
+            a = ''
+            opSign = ''
+            b = ''
+            prevDisp = ''
+
+            currentDisplay.textContent = '';
+            prevDisplay.textContent = '';
+        }
+        if (last == '') {
+            // do nothing
+        } else {
+            if (/\d/.test(last)) {
+                if (prevDisplay.textContent.charAt(prevDisplay.textContent.length - 1) != '=' || 
+                    currentDisplay.textContent.match(/\-|\+|\\|\*/)) {
+                if (firstVar) {
+                    a = a.substring(0, a.length - 1)
+                } else {
+                    b = b.substring(0, b.length - 1)
+                }
+                currentDisplay.textContent = currentDisplay.textContent.substring(0, currentDisplay.textContent.length - 1);
+            }
+
+            } else if (last == '.') {
+                
+                    if (firstVar && typeof(a) != 'number') { //if equal number then it was previously calculated
+                        a = a.substring(0, a.length - 1)
+                    } else {
+                        b = b.substring(0, b.length - 1)
+                    }
+                    usedDot = false;
+                    currentDisplay.textContent = currentDisplay.textContent.substring(0, currentDisplay.textContent.length - 1);
+
+            } else { //it is an operation
+                firstVar = true;
+                op = false;
+                secondVar = false;
+                if (currentDisplay.textContent.indexOf('.') > -1) {
+                    usedDot = True;
+                }
+                currentDisplay.textContent = currentDisplay.textContent.substring(0, currentDisplay.textContent.length - 1);
+            }
+            
+        }
     }
 }
 
-// function displayInput(e){
-//     text = currentDisplay.textContent.concat(e.target.textContent)
-//     currentDisplay.textContent = text.substr(0);//text.length-23);
-//     // console.log(e.target.className);
-
-// }
-
-// ACButton.addEventListener('click',()=> currentDisplay.textContent='')
-
-// numButtons.forEach(element => {
-//     element.addEventListener('click', storeInput);
-// });
 
 calcButtons.forEach(element => {
     element.addEventListener('click', storeInput);

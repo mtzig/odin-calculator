@@ -75,18 +75,39 @@ body{
 button{
     flex: 1;
     margin: 2px;
-}
-.bb {
-    background-color: bisque;
     border: none;
 }
-
-.bb:hover {
-    background-color: aqua;
+.num {
+    background-color: bisque;
+    
 }
 
-.bb:active {
-    background-color: green;
+.ac {
+    background-color: rgba(178, 34, 34, 0.479);
+}
+
+.del {
+    background-color: rgba(171, 191, 247, 0.993);
+}
+
+.equal{
+    background-color: rgba(109, 219, 182, 0.39);
+}
+
+.op{
+    background-color: rgba(226, 121, 82, 0.479);
+}
+
+.dot{
+    background-color: cornsilk;
+}
+
+button:hover {
+    background-color: gainsboro;
+}
+
+button:active {
+    background-color: gray;
 }
 
 
